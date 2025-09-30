@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ยอดถอนล่าสุด</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      background: #c00;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    thead {
+      background: #c00;
+      color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+    td img {
+      width: 20px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .amount {
+      color: yellow;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>ยอดถอนล่าสุด</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ธนาคาร</th>
+        <th>ยูสเซอร์</th>
+        <th>วันที่</th>
+        <th>ยอดถอน</th>
+      </tr>
+    </thead>
+    <tbody id="data-body"></tbody>
+  </table>
+
+  <script>
+    const banks = ["กรุงศรีอยุธยา","ไทยพาณิชย์","กรุงไทย","ออมสิน"];
+    const bank_icons = [
+      "https://upload.wikimedia.org/wikipedia/commons/7/79/Krungsri_Bank_Logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/0/0b/Siam_Commercial_Bank_Logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/3/39/Krung_Thai_Bank_Logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/f/f6/Government_Savings_Bank_Logo.svg"
+    ];
+
+    function randomUser() {
+      const num = Math.floor(Math.random()*1000000000).toString().padStart(10,"0");
+      return num.substring(0,6) + "XXXX";
+    }
+
+    function randomAmount() {
+      return (Math.floor(Math.random()*5000)+500).toLocaleString() + ".00";
+    }
+
+    function today() {
+      const d = new Date();
+      return d.getDate()+"/"+(d.getMonth()+1)+"/"+(d.getFullYear()+543);
+    }
+
+    function addRow() {
+      const tbody = document.getElementById("data-body");
+      const i = Math.floor(Math.random()*banks.length);
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><img src="${bank_icons[i]}"> ${banks[i]}</td>
+        <td>${randomUser()}</td>
+        <td>${today()}</td>
+        <td class="amount">${randomAmount()}</td>
+      `;
+      if (tbody.rows.length >= 5) tbody.deleteRow(0);
+      tbody.appendChild(tr);
+    }
+
+    setInterval(addRow, 2000);
+  </script>
+</body>
+</html>
